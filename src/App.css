@@ -1,1 +1,23 @@
+* {
+  font-family: "Cairo", sans-serif;
+}
+/* Navbar */
+.ant-menu-horizontal {
+  padding: 16px 70px;
+}
+.ant-menu-submenu .ant-menu-title-content,
+.ant-menu-item .ant-menu-title-content {
+  font-weight: bold;
+}
+.ant-menu-item#lang .ant-menu-title-content {
+  color: red !important;
+}
 
+.ant-menu-item::after,
+.ant-menu-submenu::after {
+  border: none !important;
+}
+.ant-menu-item:hover > .ant-menu-title-content,
+.ant-menu-submenu:hover > .ant-menu-submenu-title .ant-menu-title-content {
+  color: red;
+}

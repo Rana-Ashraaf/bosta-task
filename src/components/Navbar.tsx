@@ -1,50 +1,37 @@
 import React from "react";
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
-
-const items: MenuProps["items"] = [
-  {
-    label: "Navigation One",
-    key: "mail",
-  },
-  {
-    label: "Navigation Two",
-    key: "app",
-
-    disabled: true,
-  },
-  {
-    label: "Navigation Three - Submenu",
-    key: "SubMenu",
-    children: [
-      {
-        type: "group",
-        label: "Item 2",
-        children: [
-          {
-            label: "Option 3",
-            key: "setting:3",
-          },
-          {
-            label: "Option 4",
-            key: "setting:4",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: (
-      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-        Navigation Four - Link
-      </a>
-    ),
-    key: "alipay",
-  },
-];
+import { Col, Row } from "antd";
+import { Menu, Input } from "antd";
+const { Search } = Input;
+const SubMenu = Menu.SubMenu;
 
 const Navbar = () => {
-  return <div>navbar</div>;
+  return (
+    <Row justify={"center"} dir="rtl">
+      <Col span={8}>
+        <Menu mode="horizontal">
+          <img src="/assets/logo.jpg" alt="logo" width={95} />
+        </Menu>
+      </Col>
+      <Col span={8}>
+        <Menu mode="horizontal">
+          <Menu.Item key="home">الرئيسية</Menu.Item>
+          <Menu.Item key="prices">الأسعار</Menu.Item>
+          <Menu.Item key="sales">كلم المبيعات</Menu.Item>
+        </Menu>
+      </Col>
+      <Col span={8}>
+        <Menu mode="horizontal">
+          <SubMenu title="تتبع شحنتك">
+            <Search placeholder="ابحث عن شحنتك" />
+          </SubMenu>
+          <Menu.Item key="login">تسجيل الدخول</Menu.Item>
+          <Menu.Item id="lang" key="lang">
+            EN
+          </Menu.Item>
+        </Menu>
+      </Col>
+    </Row>
+  );
 };
 
 export default Navbar;
