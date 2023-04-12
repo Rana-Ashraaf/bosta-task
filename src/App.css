@@ -21,3 +21,18 @@
 .ant-menu-submenu:hover > .ant-menu-submenu-title .ant-menu-title-content {
   color: red;
 }
+
+.ant-input-search-button {
+  background-color: red;
+}
+.ant-input-search-button:not(:active):hover {
+  background-color: red;
+}
+.ant-card-head-title {
+  font-size: smaller;
+  color: grey;
+}
+
+.ant-layout {
+  background-color: white;
+}

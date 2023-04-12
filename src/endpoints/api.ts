@@ -7,7 +7,7 @@ const instance = axios.create({
   },
 });
 
-export const getShipment = async (trackingNumber) => {
+export const getShipment = async (trackingNumber: any) => {
   const res = await instance.get(`track/${trackingNumber}`);
   return res;
 };
