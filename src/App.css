@@ -36,3 +36,25 @@
 .ant-layout {
   background-color: white;
 }
+/* eventsTable */
+table.customTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #f8f1f4;
+  border-style: solid;
+  color: #000000;
+}
+
+table.customTable td,
+table.customTable th {
+  border-width: 2px;
+  border-color: #f8f1f4;
+  border-style: solid;
+  padding: 5px;
+}
+
+table.customTable thead {
+  background-color: #dbdbdb;
+}
