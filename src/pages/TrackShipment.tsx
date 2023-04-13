@@ -22,16 +22,32 @@ function TrackShipment() {
   const handleInputChange = (e: any) => {
     setQuery(e.target.value);
   };
+
   const handleSearch = () => {
     setSearchQuery(query);
   };
-  const { data, isLoading, isFetched, refetch } = useQuery(
+  const { data, isLoading, isFetched } = useQuery(
     ["shipmentDetails", searchQuery],
     () => getShipment(searchQuery)
   );
+  function getTimeFromISO(timestamp: string) {
+    const dateObj = new Date(timestamp);
+    const hours = dateObj.getUTCHours();
+    const minutes = dateObj.getUTCMinutes();
+    const seconds = dateObj.getUTCSeconds();
+    return `${hours}:${minutes}:${seconds}`;
+  }
 
+  function getDateFromISO(timestamp: string) {
+    const dateObj = new Date(timestamp);
+    const year = dateObj.getUTCFullYear();
+    const month = dateObj.getUTCMonth() + 1;
+    const day = dateObj.getUTCDate();
+    return `${year}-${month}-${day}`;
+  }
   return (
     <>
+      {/* navbar */}
       <Row justify={"center"} dir="rtl">
         <Col span={8}>
           <Menu mode="horizontal">
@@ -65,6 +81,7 @@ function TrackShipment() {
           </Menu>
         </Col>
       </Row>
+      {/* end navbar */}
       <Layout>
         <Row justify="center">
           <Col span={24} md={20}>
@@ -100,6 +117,7 @@ function TrackShipment() {
                   <th>الفرع</th>
                   <th>التاريخ</th>
                   <th>الوقت</th>
+                  <th>التفاصيل</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,9 +128,10 @@ function TrackShipment() {
                   data.TransitEvents?.length !== 0 &&
                   data.TransitEvents.map((event: any, index: number) => (
                     <tr>
-                      <td>Row 1, Cell 1</td>
-                      <td>Row 1, Cell 2</td>
-                      <td>Row 1, Cell 3</td>
+                      <td>{event.hub}</td>
+                      <td>{getDateFromISO(event.timestamp)}</td>
+                      <td>{getTimeFromISO(event.timestamp)}</td>
+                      <td>{event.state}</td>
                     </tr>
                   ))}
               </tbody>
