@@ -1,23 +1,15 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Col,
-  Layout,
-  Row,
-  Table,
-  Menu,
-  Input,
-  Steps,
-  Result,
-} from "antd";
-import type { ColumnsType } from "antd/es/table";
+import React, { useState, useEffect } from "react";
+import { Card, Col, Layout, Row, Menu, Input, Steps, Spin } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { getShipment } from "../endpoints/api";
+import { useTranslation } from "react-i18next";
 
 const description = "This is a description.";
 const SubMenu = Menu.SubMenu;
 function TrackShipment() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
+  const [currentState, setCurrentState] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const handleInputChange = (e: any) => {
     setQuery(e.target.value);
@@ -45,9 +37,28 @@ function TrackShipment() {
     const day = dateObj.getUTCDate();
     return `${year}-${month}-${day}`;
   }
+  useEffect(() => {
+    if (isFetched && !isLoading && data?.CurrentStatus) {
+      switch (data.CurrentStatus.state) {
+        case "DELIVERED":
+          setCurrentState(4);
+          break;
+        case "CANCELLED":
+          setCurrentState(2);
+          break;
+        case "DELIVERED_TO_SENDER":
+          setCurrentState(3);
+          break;
+        case "CREATED":
+          setCurrentState(1);
+          break;
+        default:
+          setCurrentState(1);
+      }
+    }
+  }, [data, isFetched, isLoading]);
   return (
     <>
-      {/* navbar */}
       <Row justify={"center"} dir="rtl">
         <Col span={8}>
           <Menu mode="horizontal">
@@ -88,20 +99,20 @@ function TrackShipment() {
             <Card>
               {" "}
               <Steps
-                current={1}
+                current={currentState}
                 items={[
                   {
-                    title: "Finished",
+                    title: "تم انشاء الشحنة",
+                  },
+                  {
+                    title: "تم استلام الشحنة من التاجر",
+                  },
+                  {
+                    title: "الشحنة خرجت للتسليم",
                     description,
                   },
                   {
-                    title: "In Progress",
-                    description,
-                    subTitle: "Left 00:00:08",
-                  },
-                  {
-                    title: "Waiting",
-                    description,
+                    title: "تم التسليم",
                   },
                 ]}
               />
@@ -111,31 +122,33 @@ function TrackShipment() {
 
         <Row dir="rtl" justify="center">
           <Col span={24} md={15}>
-            <table className="customTable">
-              <thead>
-                <tr>
-                  <th>الفرع</th>
-                  <th>التاريخ</th>
-                  <th>الوقت</th>
-                  <th>التفاصيل</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isFetched &&
-                  !isLoading &&
-                  data &&
-                  data.TransitEvents &&
-                  data.TransitEvents?.length !== 0 &&
-                  data.TransitEvents.map((event: any, index: number) => (
-                    <tr>
-                      <td>{event.hub}</td>
-                      <td>{getDateFromISO(event.timestamp)}</td>
-                      <td>{getTimeFromISO(event.timestamp)}</td>
-                      <td>{event.state}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <Card>
+              <table className="customTable">
+                <thead>
+                  <tr>
+                    <th>الفرع</th>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                    <th>التفاصيل</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {isFetched &&
+                    !isLoading &&
+                    data &&
+                    data.TransitEvents &&
+                    data.TransitEvents?.length !== 0 &&
+                    data.TransitEvents.map((event: any, index: number) => (
+                      <tr>
+                        <td>{event.hub}</td>
+                        <td>{getDateFromISO(event.timestamp)}</td>
+                        <td>{getTimeFromISO(event.timestamp)}</td>
+                        <td>{event.state}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </Card>
           </Col>
           <Col span={24} md={5}>
             <Card></Card>
